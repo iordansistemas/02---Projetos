@@ -1,3 +1,5 @@
+<img width="1911" height="875" alt="image" src="https://github.com/user-attachments/assets/d20070a2-3d8f-4706-b0f1-15883632ac02" />
+
 # 🎖️ Sistema PWA de Formatura de Entrega de Medalhas (PM)
 
 Sistema web mobile-first desenvolvido especificamente para seções da Polícia Militar gerenciarem solenidades de entrega de condecorações e medalhas. O sistema funciona como um aplicativo PWA (Progressive Web App) no celular e pode ser facilmente hospedado em servidores de hospedagem compartilhada como a **HostGator**.
