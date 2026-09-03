@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Diretoria de Pessoal - Entrega de Medalhas</title>
+
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Diretoria de Pessoal">
+  <link rel="icon" type="image/png" href="img/brasao_dp.png">
+  <link rel="apple-touch-icon" href="img/brasao_dp.png">
+
+  <!-- Icones Bootstrap & Estilos -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- Barra de navegação do cabeçalho superior -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo" style="background: transparent; box-shadow: none; width: auto; height: auto;">
+        <img src="img/brasao_dp.png" alt="Brasão Diretoria de Pessoal"
+          style="height: 44px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
+      </div>
+      <div>
+        <div class="brand-title" style="font-size: 1.15rem; letter-spacing: 0.5px;">DIRETORIA DE PESSOAL</div>
+        <div class="brand-subtitle"><i class="bi bi-award-fill"></i> Medelha Merito Pessoal</div>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <!-- Informações do usuário ao fazer login -->
+      <div id="user-badge" class="user-badge" style="display: none;">
+        <i class="bi bi-person-circle" style="color: var(--accent-gold); font-size: 1.1rem;"></i>
+        <div>
+          <span id="user-name" style="font-weight: 600;">--</span>
+          <span id="user-role" class="user-role-tag">--</span>
+        </div>
+        <button id="btn-logout" class="btn-logout" title="Sair do Sistema">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- Botão de login quando convidado -->
+      <button id="btn-header-login" class="btn btn-secondary btn-sm">
+        <i class="bi bi-lock-fill"></i> Acessar
+      </button>
+    </div>
+  </header>
+
+  <!-- Container Principal -->
+  <div class="app-container">
+
+    <!-- Barra de Navegação do Menu Lateral -->
+    <aside class="sidebar">
+      <a class="nav-link active" data-view="dashboard">
+        <i class="bi bi-grid-1x2-fill"></i> Painel Operacional
+      </a>
+      <a class="nav-link" data-view="checkin">
+        <i class="bi bi-qr-code-scan"></i> Check-in Recepção
+      </a>
+      <a class="nav-link" data-view="agraciados">
+        <i class="bi bi-people-fill"></i> Cadastro de Agraciados
+      </a>
+      <a class="nav-link" data-view="rsvp">
+        <i class="bi bi-check-square-fill"></i> Ciência (RSVP)
+      </a>
+      <a class="nav-link" data-view="checklist">
+        <i class="bi bi-card-checklist"></i> Checklist de Ações
+      </a>
+      <a class="nav-link nav-admin-only" data-view="usuarios" style="display: none;">
+        <i class="bi bi-shield-shaded"></i> Usuários & Perfis
+      </a>
+    </aside>
+
+    <!-- Conteúdo Principal das Views -->
+    <main class="main-content">
+
+      <!-- Dashboard -->
+      <section id="view-dashboard" class="view-section active">
+        <div class="page-header">
+          <div class="page-title">
+            <h2>Painel Operacional em Tempo Real</h2>
+            <p>Acompanhamento ao vivo dos agraciados e presença na solenidade</p>
+          </div>
+          <div class="pulse-indicator">
+            <span class="pulse-dot"></span> Sincronizado às <span id="last-sync-time">--:--</span>
+          </div>
+        </div>
+
+        <!-- Métricas Rápidas -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon gold"><i class="bi bi-award-fill"></i></div>
+            <div class="metric-info">
+              <h3 id="metric-total">0</h3>
+              <p>Total de Agraciados</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon blue"><i class="bi bi-check2-circle"></i></div>
+            <div class="metric-info">
+              <h3 id="metric-ciencia">0</h3>
+              <p>Ciência Confirmada</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon green"><i class="bi bi-person-check-fill"></i></div>
+            <div class="metric-info">
+              <h3 id="metric-presentes">0</h3>
+              <p>Presentes na Formatura</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon purple"><i class="bi bi-clock-history"></i></div>
+            <div class="metric-info">
+              <h3 id="metric-ausentes">0</h3>
+              <p>Aguardando Chegada</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feed em Tempo Real de Presença -->
+        <div class="live-feed-header">
+          <h3 style="color: #fff; font-size: 1.2rem;"><i class="bi bi-person-vcard"></i> Registro de Entrada (Fotos &
+            Presença)</h3>
+        </div>
+        <div id="presence-feed-grid" class="presence-grid">
+          <!-- Carregado via JS -->
+        </div>
+      </section>
+
+      <!-- VIEW: Check-in Recepção (Celular) -->
+      <section id="view-checkin" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h2>Recepção & Check-in do Celular</h2>
+            <p>Marque a presença dos agraciados no dia da formatura com um toque</p>
+          </div>
+        </div>
+
+        <div class="search-box" style="margin-bottom: 20px;">
+          <i class="bi bi-search"></i>
+          <input type="text" id="search-checkin" placeholder="Digite o Nome, RE, CPF ou Medalha para buscar...">
+        </div>
+
+        <div id="checkin-cards-container" class="presence-grid">
+          <!-- Carregado via JS -->
+        </div>
+      </section>
+
+      <!-- VIEW: Agraciados & Fotos -->
+      <section id="view-agraciados" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h2>Cadastro de Agraciados e Convidados</h2>
+            <p>Gerencie o efetivo a ser condecorado com fotos e local na solenidade</p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button id="btn-export-csv" class="btn btn-secondary">
+              <i class="bi bi-file-earmark-spreadsheet"></i> Exportar CSV
+            </button>
+            <button id="btn-novo-agraciado" class="btn btn-primary">
+              <i class="bi bi-person-plus-fill"></i> Cadastrar Agraciado
+            </button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-controls">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" id="search-agraciado" placeholder="Filtrar por nome, RE, CPF, unidade...">
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Foto</th>
+                  <th>Agraciado / RE / CPF</th>
+                  <th>Unidade / Cargo</th>
+                  <th>Condecoração</th>
+                  <th>Ciência</th>
+                  <th>Presença</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="agraciados-table-body">
+                <!-- Carregado via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: Ciência (RSVP) -->
+      <section id="view-rsvp" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h2>Portal de Ciência do Agraciado (RSVP)</h2>
+            <p>Consulte seu convite e registre a confirmação de ciência prévia</p>
+          </div>
+        </div>
+
+        <div style="max-width: 600px; margin: 0 auto;">
+          <div
+            style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px; border-radius: var(--radius-lg); margin-bottom: 24px; box-shadow: var(--shadow-md);">
+            <label style="display: block; font-weight: 600; color: var(--text-muted); margin-bottom: 8px;">Consulte o
+              seu Convite:</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="rsvp-search-input" class="form-control" placeholder="Digite o seu RE ou CPF...">
+              <button id="btn-rsvp-search" class="btn btn-primary">
+                <i class="bi bi-search"></i> Consultar
+              </button>
+            </div>
+          </div>
+
+          <div id="rsvp-result-box" style="display: none;">
+            <!-- Cartão do Convite via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: Checklist de Ações Operacionais -->
+      <section id="view-checklist" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h2>Checklist Operacional da Organização</h2>
+            <p>Controle de tarefas, responsáveis e registro de resultados da solenidade</p>
+          </div>
+          <button id="btn-nova-acao" class="btn btn-primary">
+            <i class="bi bi-plus-circle-fill"></i> Nova Ação
+          </button>
+        </div>
+
+        <div class="checklist-tabs">
+          <div class="checklist-tab active" data-category="Pré-Evento">
+            <i class="bi bi-calendar-event"></i> Pré-Evento
+          </div>
+          <div class="checklist-tab" data-category="Dia da Formatura">
+            <i class="bi bi-flag-fill"></i> Dia da Formatura
+          </div>
+          <div class="checklist-tab" data-category="Pós-Evento">
+            <i class="bi bi-check-all"></i> Pós-Evento
+          </div>
+        </div>
+
+        <div id="checklist-tasks-container">
+          <!-- Carregado via JS -->
+        </div>
+      </section>
+
+      <!-- VIEW: Usuários & Perfis -->
+      <section id="view-usuarios" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h2>Gestão de Usuários e Perfis de Acesso</h2>
+            <p>Gerencie privilégios dos administradores e organizadores da solenidade</p>
+          </div>
+          <button id="btn-novo-usuario" class="btn btn-primary">
+            <i class="bi bi-person-plus-fill"></i> Novo Usuário
+          </button>
+        </div>
+
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Nome do Usuário</th>
+                  <th>RE / CPF (Login)</th>
+                  <th>Perfil de Acesso</th>
+                  <th>Data de Cadastro</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="usuarios-table-body">
+                <!-- Carregado via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Tab Navigation -->
+  <nav class="mobile-nav">
+    <a class="mobile-nav-item active" data-view="dashboard">
+      <i class="bi bi-grid-1x2-fill"></i>
+      <span>Painel</span>
+    </a>
+    <a class="mobile-nav-item" data-view="checkin">
+      <i class="bi bi-qr-code-scan"></i>
+      <span>Check-in</span>
+    </a>
+    <a class="mobile-nav-item" data-view="agraciados">
+      <i class="bi bi-people-fill"></i>
+      <span>Agraciados</span>
+    </a>
+    <a class="mobile-nav-item" data-view="rsvp">
+      <i class="bi bi-check-square-fill"></i>
+      <span>Ciência</span>
+    </a>
+    <a class="mobile-nav-item" data-view="checklist">
+      <i class="bi bi-card-checklist"></i>
+      <span>Checklist</span>
+    </a>
+  </nav>
+
+  <!-- MODAL: Login -->
+  <div id="modal-login" class="modal-overlay">
+    <div class="modal-card" style="max-width: 400px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="img/brasao_dp.png" style="height: 36px; width: auto; object-fit: contain;">
+          <h3 style="font-size: 1.1rem;">Diretoria de Pessoal</h3>
+        </div>
+        <button class="btn-close-modal" onclick="App.closeLoginModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="form-login">
+          <div class="form-group">
+            <label>Usuário / RE / CPF:</label>
+            <input type="text" id="login-re-cpf" class="form-control" required
+              placeholder="Digite seu RE, CPF ou 'admin'">
+          </div>
+          <div class="form-group">
+            <label>Senha de Acesso:</label>
+            <input type="password" id="login-senha" class="form-control" required placeholder="Sua senha">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 10px;">
+            <i class="bi bi-box-arrow-in-right"></i> Acessar Sistema
+          </button>
+          <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 16px;">
+            Acesso padrão inicial: <strong>admin</strong> / <strong>admin123</strong>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Agraciado (Cadastro/Edição) -->
+  <div id="modal-agraciado" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="bi bi-person-vcard-fill" style="color: var(--accent-gold);"></i> Ficha do Agraciado</h3>
+        <button class="btn-close-modal" onclick="AgraciadosView.closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-agraciado" onsubmit="AgraciadosView.saveForm(event)">
+          <input type="hidden" id="agraciado-id" name="id">
+          <input type="hidden" id="foto-base64-input" name="foto_base64">
+
+          <!-- Upload / Câmera de Foto -->
+          <div class="form-group">
+            <label>Foto Oficial do Agraciado:</label>
+            <div class="photo-uploader-box" onclick="document.getElementById('photo-file-input').click()">
+              <img id="photo-preview" src="https://img.icons8.com/color/96/user.png" class="photo-preview-img">
+              <p style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 600;"><i
+                  class="bi bi-camera-fill"></i> Tirar Foto ou Enviar Imagem</p>
+              <input type="file" id="photo-file-input" name="foto" accept="image/*" style="display: none;">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>RE:</label>
+              <input type="text" id="agraciado-re" name="re" class="form-control" placeholder="150.256-8">
+            </div>
+            <div class="form-group">
+              <label>CPF:</label>
+              <input type="text" id="agraciado-cpf" name="cpf" class="form-control" placeholder="123.456.789-00">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nome Completo: *</label>
+            <input type="text" id="agraciado-nome" name="nome_completo" class="form-control" required
+              placeholder="Nome sem abreviações">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Posto / Graduação: *</label>
+              <input type="text" id="agraciado-posto" name="posto_graduacao" class="form-control" required
+                placeholder="Ex: Capitão PM, Subtenente...">
+            </div>
+            <div class="form-group">
+              <label>Unidade: *</label>
+              <input type="text" id="agraciado-unidade" name="unidade" class="form-control" required
+                placeholder="Ex: 1º BPM/M, CCOMSOC...">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Cargo / Função:</label>
+            <input type="text" id="agraciado-cargo" name="cargo" class="form-control"
+              placeholder="Ex: Comandante de Companhia">
+          </div>
+
+          <div class="form-group">
+            <label>Condecoração / Medalha: *</label>
+            <input type="text" id="agraciado-medalha" name="medalha" class="form-control" required
+              placeholder="Ex: Medalha Mérito Pessoal 1º Grau">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nota CCOMSOC:</label>
+              <input type="text" id="agraciado-nota" name="nota_ccomsoc" class="form-control" placeholder="Nota 123/24">
+            </div>
+            <div class="form-group">
+              <label>Boletim de Publicação:</label>
+              <input type="text" id="agraciado-boletim" name="boletim_publicacao" class="form-control"
+                placeholder="Bol G PM 045/24">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Local / Mesa / Setor na Solenidade:</label>
+            <input type="text" id="agraciado-mesa" name="mesa_setor" class="form-control"
+              placeholder="Ex: Mesa 01 - Assento 04 ou Setor A">
+          </div>
+
+          <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" onclick="AgraciadosView.closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar Agraciado</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Checklist -->
+  <div id="modal-checklist" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="bi bi-card-checklist" style="color: var(--accent-gold);"></i> Registro de Ação e Resultados</h3>
+        <button class="btn-close-modal" onclick="ChecklistView.closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-checklist" onsubmit="ChecklistView.saveTask(event)">
+          <input type="hidden" id="task-id">
+
+          <div class="form-group">
+            <label>Fase / Categoria da Ação:</label>
+            <select id="task-categoria" class="form-control" required>
+              <option value="Pré-Evento">Pré-Evento</option>
+              <option value="Dia da Formatura">Dia da Formatura</option>
+              <option value="Pós-Evento">Pós-Evento</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Título da Ação: *</label>
+            <input type="text" id="task-titulo" class="form-control" required
+              placeholder="Ex: Verificação de Som e Microfones">
+          </div>
+
+          <div class="form-group">
+            <label>Descrição do Procedimento:</label>
+            <textarea id="task-descricao" class="form-control" rows="2"
+              placeholder="Instruções operacionais detalhadas..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Responsável:</label>
+              <input type="text" id="task-responsavel" class="form-control" placeholder="Ex: Subtenente Seção de Som">
+            </div>
+            <div class="form-group">
+              <label>Status Atual:</label>
+              <select id="task-status" class="form-control">
+                <option value="PENDENTE">Pendente</option>
+                <option value="EM_ANDAMENTO">Em Andamento</option>
+                <option value="CONCLUIDO">Concluído</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label style="color: var(--accent-gold); font-weight: 700;">Resultados Obtidos / Observações:</label>
+            <textarea id="task-resultado" class="form-control" rows="3"
+              placeholder="Registre aqui o resultado obtido após tomar a ação (ex: 'Som testado às 07:30 - Todos os 4 microfones OK')."></textarea>
+          </div>
+
+          <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" onclick="ChecklistView.closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar Ação &
+              Resultado</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Usuário -->
+  <div id="modal-usuario" class="modal-overlay">
+    <div class="modal-card" style="max-width: 450px;">
+      <div class="modal-header">
+        <h3><i class="bi bi-person-gear" style="color: var(--accent-gold);"></i> Cadastro de Usuário e Privilégios</h3>
+        <button class="btn-close-modal" onclick="UsuariosView.closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-usuario" onsubmit="UsuariosView.saveUser(event)">
+          <input type="hidden" id="user-id">
+
+          <div class="form-group">
+            <label>Nome do Operador: *</label>
+            <input type="text" id="user-nome" class="form-control" required placeholder="Ex: Sgt Silva">
+          </div>
+
+          <div class="form-group">
+            <label>RE ou CPF (Usuário de Login): *</label>
+            <input type="text" id="user-re-cpf" class="form-control" required placeholder="Ex: 123.456-7 ou operador1">
+          </div>
+
+          <div class="form-group">
+            <label id="label-user-senha">Senha de Acesso: *</label>
+            <input type="password" id="user-senha" class="form-control" required
+              placeholder="Digite a senha de acesso para o novo usuário">
+          </div>
+
+
+          <div class="form-group">
+            <label>Perfil de Acesso (Privilégios): *</label>
+            <select id="user-funcao" class="form-control" required>
+              <option value="ORGANIZADOR">Organizador / Recepção (Acesso a Check-in e Checklist)</option>
+              <option value="ADMIN">Administrador (Acesso Total e Gestão de Usuários)</option>
+              <option value="OBSERVADOR">Observador (Somente Visualização do Painel, Listas e Checklist)</option>
+            </select>
+          </div>
+
+
+          <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" onclick="UsuariosView.closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar Usuário</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container para Notificações -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts JavaScript JS -->
+  <script src="js/api.js?v=1.3"></script>
+  <script src="js/auth.js?v=1.3"></script>
+  <script src="js/views/dashboard.js?v=1.3"></script>
+  <script src="js/views/agraciados.js?v=1.3"></script>
+  <script src="js/views/checkin.js?v=1.3"></script>
+  <script src="js/views/rsvp.js?v=1.3"></script>
+  <script src="js/views/checklist.js?v=1.3"></script>
+  <script src="js/views/usuarios.js?v=1.3"></script>
+  <script src="js/app.js?v=1.3"></script>
+
+
+
+
+</body>
+
+</html>

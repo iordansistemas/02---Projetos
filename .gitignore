@@ -1,0 +1,6 @@
+# Uploads temporários de teste (manter pasta)
+uploads/*
+!uploads/.gitkeep
+
+# Arquivos temporários do ambiente local
+*.log

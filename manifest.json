@@ -1,0 +1,17 @@
+{
+  "name": "Diretoria de Pessoal - Formatura de Entrega de Medalhas",
+  "short_name": "Diretoria de Pessoal",
+  "description": "Sistema de controle de agraciados, presença em tempo real e checklist operacional da Diretoria de Pessoal da Polícia Militar.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "img/brasao_dp.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}

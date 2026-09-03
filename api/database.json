@@ -1,0 +1,214 @@
+{
+    "usuarios": [
+        {
+            "id": 1,
+            "nome": "Administrador da Seção",
+            "re_cpf": "admin",
+            "senha_hash": "$2y$10$VCnVRioeI5UXnVZVy0uzheGnmhL5nh0JNaez8Z9fkuE2ktSTF32M6",
+            "funcao": "ADMIN",
+            "criado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 2,
+            "nome": "Equipe de Apoio \/ Recepção",
+            "re_cpf": "recepcao",
+            "senha_hash": "$2y$10$e7FGaWU..zbTYgAibhvEHu8zqbhYIZO1QausymEKg0PpERwcEYF0.",
+            "funcao": "ORGANIZADOR",
+            "criado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 3,
+            "nome": "Visitante \/ Observador",
+            "re_cpf": "observador",
+            "senha_hash": "$2y$10$FNKrHrTFi1s1dA\/Rm\/KFNue9t.D8bcT9uodhXe2yzOIsUtER2.saK",
+            "funcao": "OBSERVADOR",
+            "criado_em": "2026-09-03 16:14:00"
+        },
+        {
+            "id": 4,
+            "nome": "Sgt Teste",
+            "re_cpf": "sgtteste",
+            "senha_hash": "$2y$10$CebcPVOvwrCDu0Oh3zD7uug8koYof77IeQcwVNRLNFK\/SF9yYoZXS",
+            "funcao": "ORGANIZADOR",
+            "criado_em": "2026-09-03 18:18:37"
+        },
+        {
+            "id": 5,
+            "nome": "Capitao Oliveira",
+            "re_cpf": "111.222-3",
+            "senha_hash": "$2y$10$ROF2Tb9M\/upSQGXe9x0KyO9PpKNnVKTjLarV\/MMmRCxyM\/OCxI\/bS",
+            "funcao": "OBSERVADOR",
+            "criado_em": "2026-09-03 18:31:45"
+        }
+    ],
+    "agraciados": [
+        {
+            "id": 1,
+            "re": "150.256-8",
+            "cpf": "987.654.321-00",
+            "nome_completo": "Maria Silva Santos",
+            "posto_graduacao": "Capitão PM",
+            "unidade": "1º BPM\/M",
+            "cargo": "Comandante de Companhia",
+            "medalha": "Medalha Mérito Pessoal 1º Grau",
+            "nota_ccomsoc": "Nota CCOMSOC 123\/24",
+            "boletim_publicacao": "Bol G PM 045\/24",
+            "mesa_setor": "Mesa 01 - Assento 04",
+            "confirmou_ciencia": 1,
+            "data_ciencia": "2026-09-03 17:45:34",
+            "presente_formatura": 1,
+            "data_checkin": "2026-09-03 18:24:10"
+        },
+        {
+            "id": 2,
+            "re": "123.456-7",
+            "cpf": "123.456.789-00",
+            "nome_completo": "Antônio Ferreira Pinto",
+            "posto_graduacao": "Secretário de Estado",
+            "unidade": "SSP",
+            "cargo": "Secretário de Segurança Pública",
+            "medalha": "Medalha Brigadheiro Tobias",
+            "nota_ccomsoc": "Nota CCOMSOC 150\/24",
+            "boletim_publicacao": "Bol G PM 050\/24",
+            "mesa_setor": "Mesa das Autoridades",
+            "confirmou_ciencia": 1,
+            "data_ciencia": "2026-09-02 10:00:00",
+            "presente_formatura": 0,
+            "data_checkin": null
+        },
+        {
+            "id": 3,
+            "re": "188.900-1",
+            "cpf": "456.789.123-11",
+            "nome_completo": "Carlos Eduardo Oliveira",
+            "posto_graduacao": "1º Tenente PM",
+            "unidade": "2º BPTran",
+            "cargo": "Oficial de Operações",
+            "medalha": "Medalha Láurea de Mérito Pessoal 2º Grau",
+            "nota_ccomsoc": "Nota CCOMSOC 125\/24",
+            "boletim_publicacao": "Bol G PM 046\/24",
+            "mesa_setor": "Setor A - Fila 2",
+            "confirmou_ciencia": 1,
+            "data_ciencia": "2026-09-02 16:20:00",
+            "presente_formatura": 1,
+            "data_checkin": "2026-09-03 08:35:00"
+        },
+        {
+            "id": 4,
+            "re": "195.432-0",
+            "cpf": "789.123.456-22",
+            "nome_completo": "Juliana Rocha Lima",
+            "posto_graduacao": "Subtenente PM",
+            "unidade": "CPA\/M-1",
+            "cargo": "Encarregada de Seção",
+            "medalha": "Medalha Centenário do 1º BPChoque",
+            "nota_ccomsoc": "Nota CCOMSOC 128\/24",
+            "boletim_publicacao": "Bol G PM 047\/24",
+            "mesa_setor": "Setor B - Fila 1",
+            "confirmou_ciencia": 0,
+            "data_ciencia": null,
+            "presente_formatura": 0,
+            "data_checkin": null
+        },
+        {
+            "id": 5,
+            "re": "160355",
+            "cpf": "023541231-75",
+            "nome_completo": "IORDAN SANTOS ARAUJO",
+            "posto_graduacao": "Cabo",
+            "unidade": "DPT AP TEC ADM do DP",
+            "cargo": "P\/5",
+            "medalha": "Medalha Merito de Pessoal",
+            "nota_ccomsoc": "",
+            "boletim_publicacao": "",
+            "mesa_setor": "1 - B",
+            "foto_url": "uploads\/agraciado_1788462098_6a99c412a8b2a.png",
+            "confirmou_ciencia": 0,
+            "data_ciencia": null,
+            "presente_formatura": 0,
+            "data_checkin": null
+        }
+    ],
+    "checklist_acoes": [
+        {
+            "id": 1,
+            "categoria": "Pré-Evento",
+            "titulo": "Conferência do Livro de Ouro",
+            "descricao": "Verificar relação de agraciados com portarias e decretos",
+            "responsavel": "Subtenente P3",
+            "status": "CONCLUIDO",
+            "resultado_observacoes": "Todas as 45 concessões validadas com o Boletim Geral.",
+            "atualizado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 2,
+            "categoria": "Pré-Evento",
+            "titulo": "Confecção dos Diplomas e Condecorações",
+            "descricao": "Imprimir diplomas em papel supremo e montar medalhas nas caixas",
+            "responsavel": "Sargento Seção de Medalhas",
+            "status": "CONCLUIDO",
+            "resultado_observacoes": "Diplomas impressos e assinados pelo Comandante.",
+            "atualizado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 3,
+            "categoria": "Pré-Evento",
+            "titulo": "Envio de Convites e Ciência",
+            "descricao": "Disponibilizar o link do PWA para os agraciados confirmarem ciência",
+            "responsavel": "Cabo Recepção",
+            "status": "EM_ANDAMENTO",
+            "resultado_observacoes": "Link divulgado via intranet e grupos oficiais.",
+            "atualizado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 4,
+            "categoria": "Dia da Formatura",
+            "titulo": "Montagem do Som e Microfones",
+            "descricao": "Testar sistema de som, microfone sem fio da mestre de cerimônias e PAs",
+            "responsavel": "Equipe de Comunicação",
+            "status": "PENDENTE",
+            "resultado_observacoes": "",
+            "atualizado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 5,
+            "categoria": "Dia da Formatura",
+            "titulo": "Recepção e Check-in dos Agraciados",
+            "descricao": "Recepcionar agraciados na entrada com o aplicativo PWA no celular",
+            "responsavel": "Equipe de Recepção",
+            "status": "EM_ANDAMENTO",
+            "resultado_observacoes": "Recepção iniciada no portão principal.",
+            "atualizado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 6,
+            "categoria": "Dia da Formatura",
+            "titulo": "Disposição das Medalhas na Mesa de Outorga",
+            "descricao": "Organizar condecorações na ordem exata de chamada da nota de solenidade",
+            "responsavel": "Mestre de Cerimônias",
+            "status": "PENDENTE",
+            "resultado_observacoes": "",
+            "atualizado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 7,
+            "categoria": "Pós-Evento",
+            "titulo": "Publicação do Boletim Interno de Solenidade",
+            "descricao": "Registrar presença de autoridades e agraciados em ata oficial",
+            "responsavel": "P3 Seção de Comunicação",
+            "status": "PENDENTE",
+            "resultado_observacoes": "",
+            "atualizado_em": "2026-09-03 16:08:24"
+        },
+        {
+            "id": 8,
+            "categoria": "Pós-Evento",
+            "titulo": "Agradecimento e Arquivamento",
+            "descricao": "Encaminhar ofícios de agradecimento e arquivar livro de registro",
+            "responsavel": "Chefia da Seção",
+            "status": "PENDENTE",
+            "resultado_observacoes": "",
+            "atualizado_em": "2026-09-03 16:08:24"
+        }
+    ]
+}
