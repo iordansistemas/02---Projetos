@@ -11,8 +11,10 @@ ob_start();
 ini_set('display_errors', '0');
 error_reporting(0);
 
-// Permite chamadas CORS e define codificação UTF-8
-header("Access-Control-Allow-Origin: https://seudominio.com.br"); // Removida a linha duplicada com o '*'
+// Permite chamadas CORS de forma dinâmica (funciona no Localhost e na HostGator)
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+header("Access-Control-Allow-Origin: $origin");
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Content-Type: application/json; charset=UTF-8");
