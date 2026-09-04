@@ -122,7 +122,7 @@ try {
         $stmtInsert->execute([
             ':nome' => 'Administrador da Seção',
             ':re_cpf' => 'admin',
-            ':hash' => $hash,
+            ':senha_hash' => "$2y$10$VCnVRioeI5UXnVZVy0uzheGnmhL5nh0JNaez8Z9fkuE2ktSTF32M6",
             ':funcao' => 'ADMIN'
         ]);
         
