@@ -116,52 +116,50 @@ if ($method === 'GET') {
 if ($method === 'POST') {
     $user = requireOrganizador();
 
-
     // Trata upload de imagem em formato FormData ou Base64
     $fotoUrl = null;
     $id = $_POST['id'] ?? null;
 
-    // Upload via arquivo no FormData
+    // 1. Upload via arquivo no FormData (Galeria/Arquivo do PC)
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $ext = strtolower($type[1]);
+        $ext = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+        
         if (!in_array($ext, $allowed)) {
-            sendJsonResponse(['success' => false, 'message' => 'Formato inválido.'], 400);
-}
-        if (in_array($ext, $allowed)) {
-            $fileName = 'agraciado_' . time() . '_' . uniqid() . '.' . $ext;
-            $targetPath = __DIR__ . '/../uploads/' . $fileName;
-            if (move_uploaded_file($_FILES['foto']['tmp_name'], $targetPath)) {
-                $fotoUrl = 'uploads/' . $fileName;
-            }
+            sendJsonResponse(['success' => false, 'message' => 'Formato de arquivo inválido. Use JPG, PNG ou WEBP.'], 400);
+        }
+        
+        $fileName = 'agraciado_' . time() . '_' . uniqid() . '.' . $ext;
+        $targetPath = __DIR__ . '/../uploads/' . $fileName;
+        if (move_uploaded_file($_FILES['foto']['tmp_name'], $targetPath)) {
+            $fotoUrl = 'uploads/' . $fileName;
         }
     }
 
-    // Upload via Base64 (Webcam no Celular)
+    // 2. Upload via Base64 (Webcam do Celular via PWA)
     if (!$fotoUrl && !empty($_POST['foto_base64'])) {
         $base64Data = $_POST['foto_base64'];
 
-        if (preg_match('/^data:image?/\(|w+):base64,/'. $base64data, $type)) {
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
             $ext = strtolower($type[1]);
             $allowed = ['jpg', 'jpeg', 'png', 'webp'];
 
-            //travava de segurança para evitar upload de arquivos maliciosos
+            // Trava de segurança
             if (!in_array($ext, $allowed)) {
                 sendJsonResponse(['success' => false, 'message' => 'Formato de imagem inválido.'], 400);
             }
             
             $data = substr($base64Data, strpos($base64Data, ',') + 1);
             $data = base64_decode($data);
-            if ($data === false) {
+            
+            if ($data !== false) { 
                 $fileName = 'agraciado_' . time() . '_' . uniqid() . '.' . $ext;
                 $targetPath = __DIR__ . '/../uploads/' . $fileName;
                 if (file_put_contents($targetPath, $data)) {
                     $fotoUrl = 'uploads/' . $fileName;
                 }
-            
             }
         }
-        
     }
 
     $re = trim($_POST['re'] ?? '');

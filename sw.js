@@ -43,8 +43,9 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   // Ignora requisições de API para não empacancar dados em tempo real
-  if (event.request.url.includes('/api/'))return;
-    return;
+  if (event.request.url.includes('/api/')) {
+      return;
+  }
 
   event.respondWith(
     // Tenta buscar da rede primeiro para pegar a versão mais recente
