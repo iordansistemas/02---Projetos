@@ -12,6 +12,7 @@ ini_set('display_errors', '0');
 error_reporting(0);
 
 // Permite chamadas CORS e define codificação UTF-8
+header("Access-Control-Allow-Origin: https://seudominio.com.br"); // Altere o asterisco para da sua hospedagem:
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -75,13 +76,14 @@ function getDbConnection() {
             $dbInstance = $pdo;
             return $dbInstance;
         }
-    } catch (Exception $e) {
-        // Se o PDO falhar no ambiente local, o código continuará para usar o JsonDbAdapter abaixo
+     } catch (Exception $e) {
+        // Interrompe a execução e avisa que o servidor não atende aos requisitos
+        sendJsonResponse(['success' => false, 'message' => 'Erro de Infraestrutura: Extensão PDO não configurada no servidor cPanel.'], 500);
     }
-
-    // Fallback para o JsonDbAdapter (Zero dependências de extensoes do PHP, funciona 100% out-of-the-box localmente)
-    $dbInstance = new JsonDbAdapter(JSON_DB_FILE);
-    return $dbInstance;
+    
+    // Remova ou comente as duas linhas abaixo que ativam o JsonDbAdapter:
+    // $dbInstance = new JsonDbAdapter(JSON_DB_FILE);
+    // return $dbInstance;
 }
 
 /**

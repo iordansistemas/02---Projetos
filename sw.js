@@ -43,16 +43,17 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   // Ignora requisições de API para não empacancar dados em tempo real
-  if (event.request.url.includes('/api/')) {
+  if (event.request.url.includes('/api/'))return;
     return;
-  }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).catch(() => {
+    // Tenta buscar da rede primeiro para pegar a versão mais recente
+    fetch(event.request).catch(() => {
+      // Se não tiver internet (falhou), busca no cache
+      return caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }

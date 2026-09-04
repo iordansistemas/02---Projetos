@@ -17,7 +17,7 @@ if ($method === 'GET') {
 
     $stmt = $db->prepare("SELECT id, re, cpf, nome_completo, posto_graduacao, unidade, cargo, medalha, nota_ccomsoc, boletim_publicacao, mesa_setor, foto_url, confirmou_ciencia, data_ciencia 
         FROM agraciados 
-        WHERE (re = :termo OR cpf = :termo OR REPLACE(REREPLACE(cpf, '.', ''), '-', '') = :termoClean)");
+        WHERE (re = :termo OR cpf = :termo OR REPLACE(REPLACE(cpf, '.', ''), '-', '') = :termoClean)");
     
     $termoClean = preg_replace('/[^0-9]/', '', $termo);
     $stmt->execute([':termo' => $termo, ':termoClean' => $termoClean]);

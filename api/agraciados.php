@@ -123,8 +123,11 @@ if ($method === 'POST') {
 
     // Upload via arquivo no FormData
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $ext = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+        $ext = strtolower($type[1]);
         $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+        if (!in_array($ext, $allowed)) {
+            sendJsonResponse(['success' => false, 'message' => 'Formato inválido.'], 400);
+}
         if (in_array($ext, $allowed)) {
             $fileName = 'agraciado_' . time() . '_' . uniqid() . '.' . $ext;
             $targetPath = __DIR__ . '/../uploads/' . $fileName;
@@ -137,18 +140,28 @@ if ($method === 'POST') {
     // Upload via Base64 (Webcam no Celular)
     if (!$fotoUrl && !empty($_POST['foto_base64'])) {
         $base64Data = $_POST['foto_base64'];
-        if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+
+        if (preg_match('/^data:image?/\(|w+):base64,/'. $base64data, $type)) {
+            $ext = strtolower($type[1]);
+            $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+
+            //travava de segurança para evitar upload de arquivos maliciosos
+            if (!in_array($ext, $allowed)) {
+                sendJsonResponse(['success' => false, 'message' => 'Formato de imagem inválido.'], 400);
+            }
+            
             $data = substr($base64Data, strpos($base64Data, ',') + 1);
             $data = base64_decode($data);
-            if ($data !== false) {
-                $ext = strtolower($type[1]);
+            if ($data === false) {
                 $fileName = 'agraciado_' . time() . '_' . uniqid() . '.' . $ext;
                 $targetPath = __DIR__ . '/../uploads/' . $fileName;
                 if (file_put_contents($targetPath, $data)) {
                     $fotoUrl = 'uploads/' . $fileName;
                 }
+            
             }
         }
+        
     }
 
     $re = trim($_POST['re'] ?? '');
